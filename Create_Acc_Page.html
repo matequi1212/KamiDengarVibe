@@ -9,10 +9,50 @@
 </head>
 
 
-<body class="h-screen flex flex-col bg-gradient-to-b from-[#EBFBE4] to-[#96C0B7]">
+<body class="h-screen flex flex-col ">
+
+
+    <!-- SVG background -->
+<div class="absolute inset-0 -z-10 overflow-hidden">
+    <svg class="w-full h-full" viewBox="0 0 375 812" fill="none" preserveAspectRatio="none">
+      <defs>
+        <!-- Main background gradient -->
+        <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#EBFBE4" />
+          <stop offset="100%" stop-color="#F1FFE7" />
+        </linearGradient>
+        
+        <!-- New gradient for your specific path -->
+        <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="25%" stop-color="#B4DDD4" />  <!-- Start color -->
+          <stop offset="50%" stop-color="#E4C96E" />
+          <stop offset="75%" stop-color="#DDB5B5" />
+          <stop offset="100%" stop-color="#AFD7CE" /> <!-- End color -->
+        </linearGradient>
+      </defs>
+      
+      <rect width="100%" height="100%" fill="url(#bg-gradient)" />
+      <path d="M0,100 C75,50 300,150 375,100 L375,0 L0,0 Z" 
+           fill="url(#wave-gradient)"
+           fill-opacity="0.7"
+           vector-effect="non-scaling-stroke"/>
+      
+      <!-- Path with gradient fill -->
+      <path d="M0,600 C100,650 275,550 475,600 L375,812 L0,812 Z" 
+            fill="url(#wave-gradient)"
+            fill-opacity="0.7"
+            vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
+
+
+
+
+
+
     <!-- Back button (left-aligned) -->
     <div class="absolute top-6 left-6">
-        <button onclick="window.history.back()" class="flex items-center  hover:text-gray-200 transition duration-300">
+        <button onclick="window.history.back()" class="flex items-center  ">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round"  d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -21,13 +61,7 @@
     </div>
 
 
-     <!-- Image Centre -->
-    <div class="mt-4">
-        <img src="" alt="Road damage photo" class="rounded-lg shadow-md w-full max-w-md mx-auto">
-    </div>
-
-
-
+     
 
 
 
@@ -38,7 +72,7 @@
               <!-- Name -->
             <div class="flex flex-col">
                 <label for="email" class="text-black mb-1">Name</label>
-                <div class="bg-[#D9D9D9] w-72 h-10 p-6 rounded-lg shadow-lg flex items-center border-2 border-black">
+                <div class="bg-[#D9D9D9] w-72 h-10 p-6 rounded-lg shadow-lg flex items-center ">
                     <input type="text" id="email" class="w-full bg-transparent text-gray-800 border-none focus:outline-none placeholder-gray-600" placeholder="Fill in your name">
                 </div>
             </div>
@@ -46,7 +80,7 @@
             <!-- Email Field -->
             <div class="flex flex-col">
                 <label for="email" class="text-black mb-1">Email</label>
-                <div class="bg-[#D9D9D9] w-72 h-10 p-6 rounded-lg shadow-lg flex items-center border-2 border-black">
+                <div class="bg-[#D9D9D9] w-72 h-10 p-6 rounded-lg shadow-lg flex items-center ">
                     <input type="text" id="email" class="w-full bg-transparent text-gray-800 border-none focus:outline-none placeholder-gray-600" placeholder="AbuAli@Gmail.com">
                 </div>
             </div>
@@ -54,7 +88,7 @@
             <!-- Password Field -->
             <div class="flex flex-col">
                 <label for="password" class="text-black mb-1">Password</label>
-                <div class="bg-[#D9D9D9] w-72 h-10 p-6 rounded-lg shadow-lg flex items-center border-2 border-black">
+                <div class="bg-[#D9D9D9] w-72 h-10 p-6 rounded-lg shadow-lg flex items-center ">
                     <input type="password" id="password" class="w-full bg-transparent text-gray-800 border-none focus:outline-none placeholder-gray-600" placeholder="********">
                 </div>
             </div>
@@ -75,19 +109,13 @@
 
 
             <!-- Log In Button -->
-            <button class="bg-[#D9D9D9] w-72 py-3 rounded-full shadow-lg border-2 border-black hover:bg-gray-300 transition duration-300 font-medium text-gray-800 mt-4">
+            <button class="bg-[#D9D9D9] w-72 py-3 rounded-full shadow-lg  hover:bg-gray-300 transition duration-300 font-medium text-gray-800 mt-4">
                 Login
             </button>
 
-            <!-- Add this right after your login button -->
+           
 
-            <div class="w-72 text-center mt-4">
-    
-                <span class="text-sm">Already have an account? </span>
-    
-                <a href="#" class="text-sm underline hover:text-red-600">Sign in</a>
-
-            </div>
+         
 
 
 
