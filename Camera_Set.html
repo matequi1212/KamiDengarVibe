@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Illegal Parking Report</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #d8f0eb;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      text-align: center;
+      margin: 10px 0 20px 0;
+      color: black;
+    }
+
+    input[type="text"], input[type="datetime-local"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .upload-box {
+      background: #f3f3f3;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      border: 2px dashed #ccc;
+      margin-bottom: 15px;
+    }
+
+    .upload-box img, .upload-box video {
+      max-width: 100%;
+      display: none;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .upload-box p {
+      margin: 10px 0;
+      color: #666;
+    }
+
+    .btn-upload {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .btn-upload:hover {
+      background-color: #45a049;
+    }
+
+    .back {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="back">⬅️</div>
+    <h2>Report about:</h2>
+    <h3><strong>Illegal Parking</strong></h3>
+    
+    <input type="text" placeholder="Location" />
+    <input type="datetime-local" />
+
+    <div class="upload-box">
+      <p>📷 Please upload photo to continue</p>
+      <button class="btn-upload" onclick="document.getElementById('fileInput').click()">Open Camera / Albums</button>
+      <input type="file" accept="image/*,video/*" capture="environment" id="fileInput" style="display:none;" />
+
+      <img id="previewImage" />
+      <video id="previewVideo" controls playsinline></video>
+    </div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const previewImage = document.getElementById('previewImage');
+    const previewVideo = document.getElementById('previewVideo');
+
+    fileInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      const url = URL.createObjectURL(file);
+
+      if (file.type.startsWith('image/')) {
+        previewVideo.style.display = 'none';
+        previewImage.src = url;
+        previewImage.style.display = 'block';
+      } else if (file.type.startsWith('video/')) {
+        previewImage.style.display = 'none';
+        previewVideo.src = url;
+        previewVideo.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
+
