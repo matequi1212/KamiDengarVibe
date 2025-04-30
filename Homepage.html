@@ -10,10 +10,11 @@
 <body class="min-h-screen bg-[#F1FFE7] font-sans overflow-hidden">
 
   <!-- Main Content Container -->
-  <div class="relative max-w-[100%] sm:max-w-[600px] mx-auto my-8 sm:my-28 rounded-3xl p-4 sm:p-6">
+ <div class="relative w-full sm:w-fit max-w-full sm:max-w-[600px] mx-auto my-8 sm:my-28 rounded-3xl p-4 sm:p-6">
+
 
     <!-- Header with rectangle background behind both name and logo -->
-    <div class="flex justify-between items-center bg-[#B3DCD4] px-6 sm:px-10 py-6 sm:py-10 rounded-2xl shadow-md">
+    <div class="flex justify-between items-center bg-[#B3DCD4] px-6 sm:px-10 py-10 sm:py-10 rounded-2xl shadow-md">
       <!-- Text section -->
       <div>
         <h1 class="text-xl sm:text-2xl font-bold text-gray-800 leading-tight">KAMI<br>DENGAR</h1>
@@ -28,13 +29,26 @@
 
     <div class="border-b-2 border-dashed border-gray-400 my-4 sm:my-6"></div>
 
-    <!-- Complaint Status -->
+<!-- Complaint Status -->
+<a href="History_log.html" class="block">
     <div class="bg-[#f4b840] p-4 rounded-2xl shadow-md mb-4 sm:mb-6 hover:bg-yellow-500 transition">
       <div class="flex justify-between items-center mb-2">
         <h2 class="text-lg sm:text-xl font-bold text-black">Complaint Status</h2>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="black" class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24">
-          <path d="M12 2a7 7 0 0 0-7 7v3.586l-1.707 1.707A1 1 0 0 0 4 16h16a1 1 0 0 0 .707-1.707L19 12.586V9a7 7 0 0 0-7-7zm0 20a3 3 0 0 0 3-3H9a3 3 0 0 0 3 3z"/>
-        </svg>
+        <!-- Notification Bell (separated from the link) -->
+<div class="flex justify-end mb-4">
+  <button class="relative focus:outline-none">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="black" class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24">
+      <path d="M12 2a7 7 0 0 0-7 7v3.586l-1.707 1.707A1 1 0 0 0 4 16h16a1 1 0 0 0 .707-1.707L19 12.586V9a7 7 0 0 0-7-7zm0 20a3 3 0 0 0 3-3H9a3 3 0 0 0 3 3z"/>
+    </svg>
+    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full ring-2 ring-white bg-red-500"></span>
+  </button>
+  <script>
+    document.querySelector('button').addEventListener('click', function () {
+      alert('You have 2 new notifications!');
+    });
+  </script>
+  
+</div>
       </div>
       <div class="text-sm sm:text-base text-black space-y-2">
         <div>
@@ -51,7 +65,11 @@
         </div>
       </div>
     </div>
+  </a>
+  
 
+    
+    
     <!-- History & Community -->
     <div class="flex flex-wrap gap-4 sm:gap-6 justify-between">
       <div class="flex-1 min-w-[40%] sm:min-w-[45%] bg-[#B3DCD4] rounded-2xl p-3 text-center shadow-md">
