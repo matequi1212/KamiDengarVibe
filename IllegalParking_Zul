@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Illegal Parking</title>
+  <title>Illegal Parking Submission</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#cde7dc] min-h-screen flex items-center justify-center p-4">
@@ -57,7 +57,6 @@
       <input
         type="file"
         accept="image/*"
-        capture="environment"
         id="photoInput"
         class="hidden"
         onchange="previewPhoto(event)"
