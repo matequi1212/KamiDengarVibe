@@ -14,7 +14,7 @@
     <div class="w-[95%] max-w-[600px] mx-auto px-4">
       <!-- Header with rectangle background behind both name and logo -->
       <div class="relative">
-        <div class="w-[450px] h-[250px] bg-zinc-300 fixed top-0 left-1/2 transform -translate-x-1/2 rounded-2xl -z-10"></div>
+        <div class="w-full h-[200px] sm:h-[250px] md:h-[280px] bg-zinc-300 fixed top-0 left-1/2 transform -translate-x-1/2 rounded-2xl -z-10"></div>
         <div class="bg-[#B3DCD4] px-10 sm:px-10 md:px-12 py-10 sm:py-6 md:py-8 rounded-2xl shadow-md mb-6 w-full min-h-[200px] sm:min-h-[250px] md:min-h-[280px] mt-20">
           <div class="flex justify-between items-start">
             <!-- Text section -->
@@ -88,7 +88,7 @@
               d="M5.121 17.804A9.936 9.936 0 0112 15c2.21 0 4.243.715 5.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
     </button>
-    <button class="bg-gray-200 p-3 rounded-full shadow-md -mt-8">
+    <button id="reportButton" class="bg-gray-200 p-3 rounded-full shadow-md -mt-8">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24"
            stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -103,5 +103,63 @@
     </button>
   </div>
 
+  <!-- Modal Backdrop -->
+  <div id="modalBackdrop" class="fixed top-0 left-0 w-full h-full bg-black/50 backdrop-blur-sm hidden z-[100]"></div>
+
+  <!-- Report About Popup -->
+  <div id="reportPopup" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[400px] bg-[#F1FFE7] rounded-2xl z-[101] p-5 shadow-lg hidden">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-semibold">Report About</h3>
+      <button id="closeReportPopup" class="text-gray-500 hover:text-gray-700">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="space-y-2">
+      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border">Potholes</div>
+      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border">Broken traffic lights</div>
+      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border">Faded road markings</div>
+      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border">Illegal dumping</div>
+      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border">Blocked drains</div>
+      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border">Illegal parking</div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const reportButton = document.getElementById('reportButton');
+      const reportPopup = document.getElementById('reportPopup');
+      const closeReportPopup = document.getElementById('closeReportPopup');
+      const modalBackdrop = document.getElementById('modalBackdrop');
+      const reportOptions = document.querySelectorAll('#reportPopup .bg-white.p-3.rounded-lg');
+
+      function showReportPopup() {
+        console.log('Show popup clicked');
+        document.body.style.overflow = 'hidden';
+        modalBackdrop.classList.remove('hidden');
+        reportPopup.classList.remove('hidden');
+      }
+
+      function hideReportPopup() {
+        console.log('Hide popup clicked');
+        document.body.style.overflow = 'auto';
+        modalBackdrop.classList.add('hidden');
+        reportPopup.classList.add('hidden');
+      }
+
+      reportButton.addEventListener('click', showReportPopup);
+      closeReportPopup.addEventListener('click', hideReportPopup);
+      modalBackdrop.addEventListener('click', hideReportPopup);
+
+      // Handle report option clicks
+      reportOptions.forEach(option => {
+        option.addEventListener('click', () => {
+          console.log('Selected:', option.textContent);
+          hideReportPopup();
+        });
+      });
+    });
+  </script>
 </body>
 </html>
