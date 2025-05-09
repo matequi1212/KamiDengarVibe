@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,17 +81,34 @@
                 d="M12 11a4 4 0 100 8 4 4 0 000-8z"/>
         </svg>
         <p class="text-black mb-4 text-sm text-center">Please upload photo to continue</p>
-        <button
-          id="openCameraBtn"
-          class="bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-2 block mx-auto mb-4"
-        >
-          Open Camera / Albums
-        </button>
+        
+        <!-- Camera/Album Selection Buttons -->
+        <div class="flex justify-center space-x-4 mb-4">
+          <button
+            id="openCameraBtn"
+            class="bg-green-500 hover:bg-green-600 text-white rounded-full px-4 py-2"
+          >
+            Take Photo
+          </button>
+          <button
+            id="openAlbumBtn"
+            class="bg-blue-500 hover:bg-blue-600 text-white rounded-full px-4 py-2"
+          >
+            Choose from Album
+          </button>
+        </div>
+        
         <input
           type="file"
-          accept="image/*,video/*"
+          accept="image/*"
           capture="environment"
-          id="fileInput"
+          id="cameraInput"
+          class="hidden"
+        />
+        <input
+          type="file"
+          accept="image/*"
+          id="albumInput"
           class="hidden"
         />
         <img id="previewImage" class="hidden mt-4 mx-auto rounded-xl max-w-full" />
@@ -120,15 +138,24 @@
       dateFormat: "Y-m-d H:i",
     });
 
-    const fileInput     = document.getElementById('fileInput');
+    const cameraInput = document.getElementById('cameraInput');
+    const albumInput = document.getElementById('albumInput');
     const openCameraBtn = document.getElementById('openCameraBtn');
-    const previewImage  = document.getElementById('previewImage');
-    const previewVideo  = document.getElementById('previewVideo');
+    const openAlbumBtn = document.getElementById('openAlbumBtn');
+    const previewImage = document.getElementById('previewImage');
+    const previewVideo = document.getElementById('previewVideo');
 
-    openCameraBtn.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', () => {
-      const file = fileInput.files[0];
+    // Handle camera button click
+    openCameraBtn.addEventListener('click', () => cameraInput.click());
+    
+    // Handle album button click
+    openAlbumBtn.addEventListener('click', () => albumInput.click());
+    
+    // Function to handle file selection (shared by both camera and album)
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
       if (!file) return;
+      
       const url = URL.createObjectURL(file);
       if (file.type.startsWith('image/')) {
         previewVideo.classList.add('hidden');
@@ -139,7 +166,11 @@
         previewVideo.src = url;
         previewVideo.classList.remove('hidden');
       }
-    });
+    }
+
+    // Add event listeners for both file inputs
+    cameraInput.addEventListener('change', handleFileSelect);
+    albumInput.addEventListener('change', handleFileSelect);
 
     // Firebase configuration
     var firebaseConfig = {
@@ -161,7 +192,9 @@
       e.preventDefault();
       var location = document.getElementById('locationInput').value;
       var datetime = document.getElementById('dateTimePicker').value;
-      var file = fileInput.files[0];
+      
+      // Check which file input was used
+      var file = cameraInput.files[0] || albumInput.files[0];
       
       if (!location || !datetime || !file) {
         alert('Please fill all fields and upload a photo or video.');
