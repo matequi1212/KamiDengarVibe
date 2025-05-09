@@ -18,51 +18,35 @@
         <div class="bg-[#B3DCD4] px-10 sm:px-10 md:px-12 py-10 sm:py-6 md:py-8 rounded-2xl shadow-md mb-6 w-full min-h-[200px] sm:min-h-[250px] md:min-h-[280px] mt-20">
           <div class="flex justify-between items-start">
             <!-- Text section -->
-            <div class="flex flex-col space-y-2 sm:space-y-3 md:space-y-4 w-[70%]">
+            <div class="flex flex-col space-y-2 sm:space-y-3 md:space-y-4 w-full">
               <div class="w-full justify-start text-black text-3xl sm:text-4xl md:text-5xl font-bold font-['Inter']">KAMI<br/>DENGAR</div>
               <div class="justify-start text-black text-2xl sm:text-3xl md:text-4xl font-normal font-['Inter']">.........................</div>
               <div class="justify-start text-stone-900 text-2xl sm:text-3xl md:text-4xl font-bold font-['Inter']">Road<br/>Complaint</div>
             </div>
-
-            <!-- Logo -->
-            <div class="w-[20%] aspect-square bg-[#f4b840] rounded-full flex items-center justify-center">
-              <img src="/path-to-logo.png" alt="Logo" class="w-2/3 h-2/3 object-contain" />
-            </div>
+          </div>
+          <!-- Logo absolutely positioned -->
+          <div class="absolute top-0 right-0 w-[120px] h-[120px] rounded-full flex items-center justify-center">
+            <img src="Logo.png" alt="" class="w-full h-full object-contain" />
           </div>
         </div>
       </div>
 
       <!-- Complaint Status -->
-      <a href="history.html" class="block -mt-4">
-        <div class="bg-[#f4b840] p-4 sm:p-6 md:p-8 rounded-2xl shadow-md w-full min-h-[180px] sm:min-h-[200px] md:min-h-[220px]">
-          <div class="flex justify-between items-center mb-4 sm:mb-5 md:mb-6">
-            <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-black">Complaint Status</h2>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="black" class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" viewBox="0 0 24 24">
-              <path d="M12 2a7 7 0 0 0-7 7v3.586l-1.707 1.707A1 1 0 0 0 4 16h16a1 1 0 0 0 .707-1.707L19 12.586V9a7 7 0 0 0-7-7zm0 20a3 3 0 0 0 3-3H9a3 3 0 0 0 3 3z"/>
+      <div class="bg-[#f4b840] p-4 sm:p-6 md:p-8 rounded-2xl shadow-md w-full min-h-[180px] sm:min-h-[200px] md:min-h-[220px] flex flex-col items-stretch">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold text-black">Complaint Status</h2>
+          <button id="notificationBell" class="focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-7 h-7 text-black">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
-          </div>
-          <div class="text-base sm:text-lg md:text-xl text-black space-y-4 sm:space-y-5 md:space-y-6">
-            <div>
-              <h3 class="font-bold mb-2">Potholes</h3>
-              <p class="space-y-1">
-                <span class="block">Time/Date: 12/12/25 12:03:00</span>
-                <span class="block">Location: Bandar Seri Begawan, Menglait</span>
-                <span class="block">Status: <span class="font-semibold">Under Maintenance</span></span>
-              </p>
-            </div>
-            <div>
-              <h3 class="font-bold mb-2">Illegal Parking</h3>
-              <p class="space-y-1">
-                <span class="block">Time/Date: 5/10/25 10:00:35</span>
-                <span class="block">Location: Bandar Seri Begawan, Yayasan</span>
-                <span class="block">Status: <span class="font-semibold">Under Maintenance</span></span>
-              </p>
-            </div>
-          </div>
+          </button>
         </div>
-      </a>
+        <div id="history-card-container"></div>
+      </div>
+
 
       <!-- History & Community -->
+      <a href="History_Log.html" class="text-gray-700">
       <div class="w-full bg-[#B3DCD4] h-24 rounded-2xl shadow-md mb-4 mt-8">
         <div class="flex justify-between items-center h-full px-4 sm:px-6 md:px-8">
           <div class="flex items-center gap-2">
@@ -70,35 +54,51 @@
                  class="w-4 h-4 sm:w-5 sm:h-5 object-contain" />
             <p class="text-lg sm:text-sm font-medium">History Log</p>
           </div>
+          </a>
+          <a href="Community_Update.html" class="text-gray-700">
           <div class="flex items-center gap-2">
             <img src="https://img.icons8.com/ios-filled/50/000000/group.png"
                  class="w-4 h-4 sm:w-5 sm:h-5 object-contain" />
             <p class="text-lg sm:text-sm font-medium">Community Update</p>
           </div>
+          </a>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Bottom Navbar -->
-  <div class="fixed bottom-0 left-0 right-0 bg-[#B3DCD4] h-14 flex justify-around items-center shadow-lg">
-    <button class="text-gray-700">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M5.121 17.804A9.936 9.936 0 0112 15c2.21 0 4.243.715 5.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    </button>
-    <button id="reportButton" class="bg-gray-200 p-3 rounded-full shadow-md -mt-8">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24"
+ <!-- Bottom Navbar -->
+<div class="fixed bottom-0 left-0 right-0 bg-[#B3DCD4] h-14 flex justify-around items-center shadow-lg z-10 gap-x-12">
+  
+  <!-- Profile Button -->
+  <a href="profile.html" class="text-gray-700">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M5.121 17.804A9.936 9.936 0 0112 15c2.21 0 4.243.715 5.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  </a>
+
+  <a href ="Community_Update.html" class="text-gray-700">
+
+  <button class="text-gray-700">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15 10l4.553-2.276a1 1 0 011.447.894v6.764a1 1 0 01-1.447.894L15 14m0-4v4m-2-6h-3.172a2 2 0 01-1.414-.586l-1.828-1.828A2 2 0 005.172 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-5z" />
+    </svg>
+  </button>
+  </a>
+
+</div>
+
+
+  <!-- Floating Report Button -->
+  <div class="fixed left-1/2 transform -translate-x-1/2 z-20" style="bottom: -2rem;">
+    <button id="reportButton" class="bg-gray-200 p-10 rounded-full shadow-md">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-700" fill="none" viewBox="0 0 24 24"
            stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M12 4v16m8-8H4" />
-      </svg>
-    </button>
-    <button class="text-gray-700">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 10l4.553-2.276a1 1 0 011.447.894v6.764a1 1 0 01-1.447.894L15 14m0-4v4m-2-6h-3.172a2 2 0 01-1.414-.586l-1.828-1.828A2 2 0 005.172 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2h-5z" />
       </svg>
     </button>
   </div>
@@ -117,12 +117,12 @@
       </button>
     </div>
     <div class="space-y-2">
-      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border">Potholes</div>
-      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border">Broken traffic lights</div>
-      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border">Faded road markings</div>
-      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border">Illegal dumping</div>
-      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border">Blocked drains</div>
-      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border">Illegal parking</div>
+      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border" data-link="Potholes_Zul.html">Potholes</div>
+      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border" data-link="BrokenTrafficLight_Zul.html">Broken traffic lights</div>
+      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border" data-link="FadedRoadMarking_Zul.html">Faded road markings</div>
+      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border" data-link="IllegalDumping_Zul.html">Illegal dumping</div>
+      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border" data-link="Blocked_Drain_Zul.html">Blocked drains</div>
+      <div class="bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors border" data-link="IllegalParking_Zul.html">Illegal parking</div>
     </div>
   </div>
 
@@ -133,6 +133,7 @@
       const closeReportPopup = document.getElementById('closeReportPopup');
       const modalBackdrop = document.getElementById('modalBackdrop');
       const reportOptions = document.querySelectorAll('#reportPopup .bg-white.p-3.rounded-lg');
+      const bell = document.getElementById('notificationBell');
 
       function showReportPopup() {
         console.log('Show popup clicked');
@@ -155,11 +156,52 @@
       // Handle report option clicks
       reportOptions.forEach(option => {
         option.addEventListener('click', () => {
-          console.log('Selected:', option.textContent);
+          const link = option.getAttribute('data-link');
+          if (link) {
+            window.location.href = link;
+          }
           hideReportPopup();
         });
       });
+
+      fetch('History_Log.html')
+        .then(response => response.text())
+        .then(html => {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = html;
+          const cards = tempDiv.querySelectorAll('.history-card');
+          let output = '';
+          for (let i = 0; i < Math.min(2, cards.length); i++) {
+            const card = cards[i];
+            const title = card.querySelector('h2')?.outerHTML || '';
+            const location = Array.from(card.querySelectorAll('p')).find(p => p.textContent?.toLowerCase().includes('location'))?.outerHTML || '';
+            const date = Array.from(card.querySelectorAll('p')).find(p => p.textContent?.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/))?.outerHTML || '';
+            const status = Array.from(card.querySelectorAll('p')).find(p => p.classList.contains('font-medium'))?.outerHTML || '';
+            output += `<div class='mb-2'>${title}${location}${date}${status}</div>`;
+          }
+          document.getElementById('history-card-container').innerHTML = output || '<p>No history found.</p>';
+        });
+
+      if (bell) {
+        bell.addEventListener('click', function() {
+          alert('No new notifications!');
+        });
+      }
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+  // ...existing code...
+
+  const box = document.getElementById('complaintStatusBox');
+  const bell = document.getElementById('notificationBell');
+  if (box) {
+    box.addEventListener('click', function(e) {
+      // Prevent navigation if the bell was clicked
+      if (e.target.closest('#notificationBell')) return;
+      window.location.href = 'History_Log.html';
+    });
+  }
+});
   </script>
 </body>
 </html>
