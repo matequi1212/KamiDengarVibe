@@ -1,103 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Faded Road Marking Submission</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Potholes Report</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
 </head>
-<body class="bg-[#cde7dc] min-h-screen flex items-center justify-center p-4">
+<body class="flex items-center justify-center min-h-screen bg-gray-200 p-4">
 
-  <div class="w-[320px] bg-[#cde7dc] rounded-[40px] border-4 border-[#cde7dc] shadow-lg relative overflow-hidden">
-    <!-- Top pill shape -->
-    <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-28 h-6 bg-white rounded-full z-10"></div>
-
-    <!-- Back Arrow -->
-    <div class="absolute top-4 left-4 z-20">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+  <!-- iPhone-16 frame (responsive) -->
+  <div
+    class="relative w-full max-w-[390px] aspect-[9/19] overflow-hidden"
+    style="
+      background: linear-gradient(180deg, #F1FFE7 36.5%, #96C0B7 100%);
+      border-radius: 50px;
+    "
+  >
+    <!-- Blob background -->
+    <div class="relative w-full">
+      <div class="w-full pb-[68.18%]"></div>
+      <svg xmlns="http://www.w3.org/2000/svg"
+           viewBox="0 0 393 268"
+           preserveAspectRatio="xMidYMid slice"
+           class="absolute inset-0 w-full h-full fill-[#B4DDD4] filter drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
+      >
+        <g filter="url(#filter0_d_670_22534)">
+          <path d="M408.486 144.308C408.545 164.374 395.186 182.004 375.852 187.375C371.968 188.453 367.957 189 363.926 189L79.1341 189C57.2446 189 39.4997 206.745 39.4997 228.634L39.4997 234.259C39.4997 240.833 36.9694 247.154 32.4335 251.912C16.4606 268.666 -11.7785 257.281 -11.6643 234.133L-11.395 179.525L-11.672 85.8976C-11.843 28.0981 34.8741 -18.8962 92.6736 -19.0673L303.345 -19.6905C361.144 -19.8615 408.138 26.8556 408.309 84.6551L408.486 144.308Z"/>
+        </g>
+        <defs>
+          <filter id="filter0_d_670_22534"
+                  x="-15.6726" y="-19.6909"
+                  width="428.159" height="287.585"
+                  filterUnits="userSpaceOnUse"
+                  color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                           result="hardAlpha"/>
+            <feOffset dy="4"/>
+            <feGaussianBlur stdDeviation="2"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1" result="shape"/>
+          </filter>
+        </defs>
       </svg>
     </div>
 
-    <!-- Content -->
-    <div class="pt-16 px-4 pb-6">
-      <div class="text-center">
-        <h2 class="text-lg text-black">Report about:</h2>
-        <h1 class="text-2xl font-bold text-black mt-1">Faded Road Marking</h1>
-      </div>
+    <!-- Content overlay -->
+    <div class="absolute inset-0 flex flex-col items-center px-6 pt-8 space-y-4 overflow-y-auto z-10">
+      <button class="self-start text-black text-2xl">←</button>
+      <h2 class="text-black text-base text-center">Report about:</h2>
+      <h3 class="text-black text-2xl font-bold text-center">FadedRoadMarking_Zul</h3>
 
-      <!-- Input Fields -->
-      <div class="mt-6 space-y-4">
-        <input type="text" placeholder="location"
-          class="w-full px-4 py-3 rounded-full bg-[#e8f2d3] text-gray-800 placeholder-gray-600 outline-none" />
-        <input type="date"
-          class="w-full px-4 py-3 rounded-full bg-[#e8f2d3] text-gray-800 placeholder-gray-600 outline-none" />
-      </div>
-
-      <!-- Upload Photo Box with Preview -->
-      <div id="uploadBox"
-        onclick="document.getElementById('photoInput').click()"
-        class="mt-6 bg-white rounded-2xl max-h-[300px] w-full flex flex-col items-center justify-center shadow-inner border border-gray-300 cursor-pointer overflow-y-auto transition hover:bg-gray-50">
-
-        <!-- Icon + Prompt -->
-        <div id="uploadPrompt" class="flex flex-col items-center space-y-1 py-4">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="gray" class="w-8 h-8 mb-1">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0 0V8m0 4h4m-4 0H8m12 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p class="text-sm text-gray-500 text-center leading-snug">Please upload<br />photo to continue</p>
-        </div>
-
-        <!-- Preview Image -->
-        <img id="previewImage" class="hidden w-full rounded-2xl" />
-      </div>
-
-      <!-- Hidden File Input -->
       <input
-        type="file"
-        accept="image/*"
-        id="photoInput"
-        class="hidden"
-        onchange="previewPhoto(event)"
+        id="locationInput"
+        type="text"
+        placeholder="Enter address or location"
+        class="w-full max-w-xs bg-[#E8E8E8] rounded-full px-4 py-2 border border-gray-300 placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-300"
       />
 
-      <!-- Submit Button -->
-      <button id="submitBtn" class="mt-6 w-full px-4 py-3 rounded-full bg-[#4caf50] text-white font-bold hover:bg-[#45a049]">
-        Submit
-      </button>
-    </div>
-  </div>
+      <input
+        id="dateTimePicker"
+        type="text"
+        placeholder="Select date & time"
+        class="w-full max-w-xs bg-[#E8E8E8] rounded-full px-4 py-2 border border-gray-300 placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-300"
+      />
 
-  <!-- Thank You Modal -->
-  <div id="thankYouModal" class="hidden absolute inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg p-4 w-[60%] max-w-xs shadow-lg text-center">
-      <h2 class="text-lg font-bold">Thank you</h2>
-      <p class="text-gray-700 mt-2 text-sm">Your complaint has been successfully submitted.</p>
-      <div class="mt-4 space-y-2">
-        <button onclick="window.location.href='Homepage.html'" class="w-full px-3 py-2 rounded bg-gray-200 text-gray-800 text-sm hover:bg-gray-300">Back to Homepage</button>
-        <button onclick="window.location.href='History_Log.html'" class="w-full px-3 py-2 rounded bg-gray-200 text-gray-800 text-sm hover:bg-gray-300">Check current status</button>
+      <div class="w-full max-w-md bg-[#E8E8E8] rounded-2xl p-6 shadow-md border border-gray-300 mt-4">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="w-12 h-12 mx-auto text-gray-500"
+             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 7h4l3-3h4l3 3h4a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V8a1 1 0 011-1z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 11a4 4 0 100 8 4 4 0 000-8z"/>
+        </svg>
+        <p class="text-black mb-4 text-sm text-center">Please upload photo to continue</p>
+        <button
+          id="openCameraBtn"
+          class="bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-2 block mx-auto mb-4"
+        >
+          Open Camera / Albums
+        </button>
+        <input
+          type="file"
+          accept="image/*,video/*"
+          capture="environment"
+          id="fileInput"
+          class="hidden"
+        />
+        <img id="previewImage" class="hidden mt-4 mx-auto rounded-xl max-w-full" />
+        <video
+          id="previewVideo"
+          class="hidden mt-4 mx-auto rounded-xl max-w-full"
+          controls playsinline
+        ></video>
+        <button
+          id="submitReport"
+          class="mt-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-2 block mx-auto"
+        >
+          Submit Report
+        </button>
       </div>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <!-- Firebase v8 integration -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
   <script>
-    function previewPhoto(event) {
-      const file = event.target.files[0];
+    flatpickr("#dateTimePicker", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+    });
+
+    const fileInput     = document.getElementById('fileInput');
+    const openCameraBtn = document.getElementById('openCameraBtn');
+    const previewImage  = document.getElementById('previewImage');
+    const previewVideo  = document.getElementById('previewVideo');
+
+    openCameraBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
       if (!file) return;
+      const url = URL.createObjectURL(file);
+      if (file.type.startsWith('image/')) {
+        previewVideo.classList.add('hidden');
+        previewImage.src = url;
+        previewImage.classList.remove('hidden');
+      } else {
+        previewImage.classList.add('hidden');
+        previewVideo.src = url;
+        previewVideo.classList.remove('hidden');
+      }
+    });
 
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const preview = document.getElementById('previewImage');
-        preview.src = e.target.result;
-        preview.classList.remove('hidden');
-        document.getElementById('uploadPrompt').classList.add('hidden');
-      };
-      reader.readAsDataURL(file);
-    }
+    // Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDxUojvQOowLYJAUdd-PRArjiR2TlxeV78",
+      authDomain: "kamidengar-36c83.firebaseapp.com",
+      projectId: "kamidengar-36c83",
+      storageBucket: "kamidengar-36c83.appspot.com",
+      messagingSenderId: "310947680381",
+      appId: "1:310947680381:web:af6a0a2f79759d94d1a114",
+      measurementId: "G-XR8Y9NB893"
+    };
+    
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+    var storage = firebase.storage();
 
-    document.getElementById('submitBtn').addEventListener('click', function() {
-      document.getElementById('thankYouModal').classList.remove('hidden');
+    document.getElementById('submitReport').addEventListener('click', function(e) {
+      e.preventDefault();
+      var location = document.getElementById('locationInput').value;
+      var datetime = document.getElementById('dateTimePicker').value;
+      var file = fileInput.files[0];
+      
+      if (!location || !datetime || !file) {
+        alert('Please fill all fields and upload a photo or video.');
+        return;
+      }
+
+      // Upload file to Firebase Storage
+      var storageRef = storage.ref('reports/' + Date.now() + '_' + file.name);
+      var uploadTask = storageRef.put(file);
+
+      uploadTask.on('state_changed', 
+        null,
+        function(error) {
+          alert('Upload failed: ' + error.message);
+        },
+        function() {
+          // Get download URL
+          uploadTask.snapshot.ref.getDownloadURL().then(function(url) {
+            // Add report to Firestore
+            db.collection('reports').add({
+              reporter: 'Anonymous',
+              type: 'potholes',
+              title: 'Potholes',
+              location: location,
+              datetime: firebase.firestore.Timestamp.fromDate(new Date(datetime)),
+              mediaUrl: url,
+              created: firebase.firestore.FieldValue.serverTimestamp(),
+              upvotes: 0,
+              downvotes: 0
+            }).then(function() {
+              alert('Report submitted successfully!');
+              window.location.href = 'Community_Update.html';
+            }).catch(function(error) {
+              alert('Error submitting report: ' + error.message);
+            });
+          });
+        }
+      );
     });
   </script>
-
 </body>
 </html>
