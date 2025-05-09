@@ -8,11 +8,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
     @media (max-width: 640px) {
-      .history-card {
-        width: 90vw;
-        max-width: 100%;
-      }
+      .history-card { width: 90vw; max-width: 100%; }
     }
+    .filter-dropdown {
+      display: none;
+      position: absolute;
+      right: 0; top: 100%;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      z-index: 10; min-width: 200px; padding: 8px;
+    }
+    .filter-dropdown.show { display: block; }
+    .ring-2 { box-shadow: 0 0 0 2px currentColor; }
   </style>
 </head>
 <body class="min-h-screen relative flex flex-col font-inter p-4" style="font-family: 'Inter', sans-serif;">
@@ -34,7 +42,7 @@
 
   <!-- Back button -->
   <div class="absolute top-6 left-6">
-    <button onclick="window.history.back()" class="flex items-center ">
+    <button onclick="window.history.back()" class="flex items-center">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>
@@ -42,152 +50,227 @@
     </button>
   </div>
 
-  <!-- Main content -->
   <div class="flex-grow flex flex-col items-center pt-16 pb-8">
-    <h1 class="text-2xl md:text-[30px] font-bold mb-6">History Log</h1>
+    <h1 class="text-2xl md:text-[30px] font-bold mb-6">Community</h1>
 
-    <!-- Search bar -->
-    <div class="w-full max-w-md mx-auto mb-6 px-4">
-      <div class="relative">
-        <input 
-          id="searchInput"
-          type="search" 
-          placeholder="Search..." 
-          class="w-full bg-[#D9D9D9] py-3 px-6 pr-12 rounded-full shadow-lg border-2 border-black focus:outline-none placeholder-gray-600"
-          onkeyup="filterCards()">
+    <!-- Search + Filter -->
+    <div class="w-full max-w-md mx-auto mb-6 px-4 flex gap-2">
+      <div class="relative flex-grow">
+        <input id="searchInput" type="search" placeholder="Search..."
+               class="w-full bg-[#D9D9D9] py-3 px-6 pr-12 rounded-full shadow-lg border-2 border-black focus:outline-none placeholder-gray-600"
+               onkeyup="filterCards()">
         <div class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
       </div>
+      <div class="relative">
+        <button id="filterButton" class="bg-[#D9D9D9] p-3 rounded-full shadow-lg border-2 border-black hover:bg-gray-300 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+        </button>
+        <div id="filterDropdown" class="filter-dropdown">
+          <div class="mb-2">
+            <h3 class="font-bold mb-1">Complaint Type</h3>
+            <label class="flex items-center mb-1">
+              <input type="checkbox" id="filter-potholes" checked onchange="filterCards()"><span class="ml-2">Potholes</span>
+            </label>
+            <label class="flex items-center mb-1">
+              <input type="checkbox" id="filter-trafficlight" checked onchange="filterCards()"><span class="ml-2">Broken Traffic Light</span>
+            </label>
+            <label class="flex items-center mb-1">
+              <input type="checkbox" id="filter-markings" checked onchange="filterCards()"><span class="ml-2">Faded Road Markings</span>
+            </label>
+            <label class="flex items-center mb-1">
+              <input type="checkbox" id="filter-dumping" checked onchange="filterCards()"><span class="ml-2">Illegal Dumping</span>
+            </label>
+            <label class="flex items-center mb-1">
+              <input type="checkbox" id="filter-drains" checked onchange="filterCards()"><span class="ml-2">Blocked Drains</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" id="filter-other" checked onchange="filterCards()"><span class="ml-2">Other</span>
+            </label>
+          </div>
+          <div class="mb-2">
+            <h3 class="font-bold mb-1">Date Range</h3>
+            <div class="flex gap-2 items-center">
+              <input type="date" id="dateFrom" class="border rounded px-2 py-1 text-sm" onchange="filterCards()">
+              <span>to</span>
+              <input type="date" id="dateTo" class="border rounded px-2 py-1 text-sm" onchange="filterCards()">
+            </div>
+          </div>
+          <button onclick="resetFilters()" class="text-blue-600 text-sm">Reset Filters</button>
+        </div>
+      </div>
     </div>
 
-    <!-- History cards -->
-    <div class="w-full space-y-4 px-4 max-w-md">
+    <!-- Cards Container -->
+    <div class="w-full max-w-md space-y-6" id="cardsContainer">
+
+      <!-- Card 1: Potholes -->
+      <div class="history-card bg-[#D9D9D9] p-6 rounded-[40px] shadow-lg space-y-3" data-id="c1" data-type="potholes" data-date="2025-12-12">
       
-      <!-- Card 1 -->
-      <div class="bg-[#D9D9D9] p-6 rounded-[40px] shadow-lg  space-y-3 history-card" data-keywords="potholes road damage bandar seri begawan menglait">
-        <div class="flex justify-between items-start">
-          <h2 class="text-lg font-bold">Potholes</h2>
+        <h3 class="text-lg md:text-[20px] font-bold">Potholes</h3>
+        <p class="text-xs md:text-sm">Location: Bandar Seri Begawan Menglait</p>
+        <p class="text-xs md:text-sm">12/12/25 12:03:60</p>
+        <div class="mt-3 rounded border border-gray-400 bg-gray-200 h-32 md:h-40 overflow-hidden">
+          <img src="https://via.placeholder.com/400x200?text=Potholes" alt="Potholes" class="w-full h-full object-cover">
         </div>
-        <div class="space-y-1">
-          <p class="text-xs md:text-sm">Location: Bandar Seri Begawan Menglait</p>
-          <p class="text-xs md:text-sm">12/12/25 12:03:00</p>
-          <p class="text-xs md:text-sm font-medium text-green-600">Complaint verified</p>
-        </div>
-        <div class="mt-3 rounded border border-gray-400 bg-gray-200 h-32 md:h-40 flex items-center justify-center">
-          <span class="text-gray-500 text-sm">Image preview</span>
-        </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="bg-[#D9D9D9] p-6 rounded-[40px] shadow-lg  space-y-3 history-card" data-keywords="potholes road hole bandar seri begawan menglait">
-        <div class="flex justify-between items-start">
-          <h2 class="text-lg font-bold">Potholes</h2>
-        </div>
-        <div class="space-y-1">
-          <p class="text-xs md:text-sm">Location: Bandar Seri Begawan Menglait</p>
-          <p class="text-xs md:text-sm">12/12/25 12:03:00</p>
-          <p class="text-xs md:text-sm font-medium text-green-600">Complaint verified</p>
-        </div>
-        <div class="mt-3 rounded border border-gray-400 bg-gray-200 h-32 md:h-40 flex items-center justify-center">
-          <span class="text-gray-500 text-sm">Image preview</span>
+        <div class="flex items-center gap-4 pt-2">
+          <button class="vote-up bg-green-500 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center" onclick="voteUp(this)">👍</button>
+          <span class="text-xs vote-count">0</span>
+          <button class="vote-down bg-red-500 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center" onclick="voteDown(this)">👎</button>
+          <span class="text-xs vote-count">0</span>
         </div>
       </div>
 
-      <!-- Card 3 -->
-      <div class="bg-[#D9D9D9] p-6 rounded-[40px] shadow-lg  space-y-3 history-card" data-keywords="broken light lamp streetlamp bandar seri begawan menglait">
-        <div class="flex justify-between items-start">
-          <h2 class="text-lg font-bold">Broken Light</h2>
+      <!-- Card 2: Broken Traffic Light -->
+      <div class="history-card bg-[#D9D9D9] p-6 rounded-[40px] shadow-lg space-y-3" data-id="c2" data-type="trafficlight" data-date="2025-12-15">
+        <div class="flex items-center gap-3">
+
         </div>
-        <div class="space-y-1">
-          <p class="text-xs md:text-sm">Location: Bandar Seri Begawan Menglait</p>
-          <p class="text-xs md:text-sm">12/12/25 12:03:00</p>
-          <p class="text-xs md:text-sm font-medium text-red-600">Under Construction </p>
+        <h3 class="text-lg md:text-[20px] font-bold">Broken Traffic Light</h3>
+        <p class="text-xs md:text-sm">Location: Kiulap</p>
+        <p class="text-xs md:text-sm">12/15/25 14:30:00</p>
+        <div class="mt-3 rounded border border-gray-400 bg-gray-200 h-32 md:h-40 overflow-hidden">
+          <img src="https://via.placeholder.com/400x200?text=Broken+Traffic+Light" alt="Broken Traffic Light" class="w-full h-full object-cover">
         </div>
-        <div class="mt-3 rounded border border-gray-400 bg-gray-200 h-32 md:h-40 flex items-center justify-center">
-          <span class="text-gray-500 text-sm">Image preview</span>
+        <div class="flex items-center gap-4 pt-2">
+          <button class="vote-up bg-green-500 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center" onclick="voteUp(this)">👍</button>
+          <span class="text-xs vote-count">0</span>
+          <button class="vote-down bg-red-500 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center" onclick="voteDown(this)">👎</button>
+          <span class="text-xs vote-count">0</span>
         </div>
       </div>
 
-      <!-- Card 4 -->
-      <div class="bg-[#D9D9D9] p-6 rounded-[40px] shadow-lg  space-y-3 history-card" data-keywords="broken light lamp streetlamp bandar seri begawan menglait">
-        <div class="flex justify-between items-start">
-          <h2 class="text-lg font-bold">Broken Light</h2>
+      <!-- Card 3: Faded Road Markings -->
+      <div class="history-card bg-[#D9D9D9] p-6 rounded-[40px] shadow-lg space-y-3" data-id="c3" data-type="markings" data-date="2025-12-20">
+        <div class="flex items-center gap-3">
+          
         </div>
-        <div class="space-y-1">
-          <p class="text-xs md:text-sm">Location: Bandar Seri Begawan Menglait</p>
-          <p class="text-xs md:text-sm">12/12/25 12:03:00</p>
-          <p class="text-xs md:text-sm font-medium text-red-600">Under Construction </p>
+        <h3 class="text-lg md:text-[20px] font-bold">Faded Road Markings</h3>
+        <p class="text-xs md:text-sm">Location: Kiulap</p>
+        <p class="text-xs md:text-sm">12/20/25 10:10:00</p>
+        <div class="mt-3 rounded border border-gray-400 bg-gray-200 h-32 md:h-40 overflow-hidden">
+          <img src="https://via.placeholder.com/400x200?text=Faded+Road+Markings" alt="Faded Road Markings" class="w-full h-full object-cover">
         </div>
-        <div class="mt-3 rounded border border-gray-400 bg-gray-200 h-32 md:h-40 flex items-center justify-center">
-          <span class="text-gray-500 text-sm">Image preview</span>
-        </div>
-      </div>
-
-      <!-- Card 5 -->
-      <div class="bg-[#D9D9D9] p-6 rounded-[40px] shadow-lg  space-y-3 history-card" data-keywords="clogged drain water blockage bandar seri begawan menglait">
-        <div class="flex justify-between items-start">
-          <h2 class="text-lg font-bold">Clogged Drain</h2>
-        </div>
-        <div class="space-y-1">
-          <p class="text-xs md:text-sm">Location: Bandar Seri Begawan Menglait</p>
-          <p class="text-xs md:text-sm">12/12/25 12:03:00</p>
-          <p class="text-xs md:text-sm font-medium text-red-600">Under Construction </p>
-        </div>
-        <div class="mt-3 rounded border border-gray-400 bg-gray-200 h-32 md:h-40 flex items-center justify-center">
-          <span class="text-gray-500 text-sm">Image preview</span>
+        <div class="flex items-center gap-4 pt-2">
+          <button class="vote-up bg-green-500 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center" onclick="voteUp(this)">👍</button>
+          <span class="text-xs vote-count">0</span>
+          <button class="vote-down bg-red-500 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center" onclick="voteDown(this)">👎</button>
+          <span class="text-xs vote-count">0</span>
         </div>
       </div>
 
-      <!-- Card 6 -->
-      <div class="bg-[#D9D9D9] p-6 rounded-[40px] shadow-lg  space-y-3 history-card" data-keywords=" no missing sign traffic signage bandar seri begawan menglait">
-        <div class="flex justify-between items-start">
-          <h2 class="text-lg font-bold">No Sign</h2>
-        </div>
-        <div class="space-y-1">
-          <p class="text-xs md:text-sm">Location: Bandar Seri Begawan Menglait</p>
-          <p class="text-xs md:text-sm">12/12/25 12:03:00</p>
-          <p class="text-xs md:text-sm font-medium text-red-600">Under Construction </p>
-        </div>
-        <div class="mt-3 rounded border border-gray-400 bg-gray-200 h-32 md:h-40 flex items-center justify-center">
-          <span class="text-gray-500 text-sm">Image preview</span>
-        </div>
-      </div>
-
-      <!-- Card 7 -->
-      <div class="bg-[#D9D9D9] p-6 rounded-[40px] shadow-lg space-y-3 history-card" data-keywords="broken light lamp streetlamp bandar seri begawan menglait">
-        <div class="flex justify-between items-start">
-          <h2 class="text-lg font-bold">Broken Light</h2>
-        </div>
-        <div class="space-y-1">
-          <p class="text-xs md:text-sm">Location: Bandar Seri Begawan Menglait</p>
-          <p class="text-xs md:text-sm">12/12/25 12:03:00</p>
-          <p class="text-xs md:text-sm font-medium text-red-600">Under Construction </p>
-        </div>
-        <div class="mt-3 rounded border border-gray-400 bg-gray-200 h-32 md:h-40 flex items-center justify-center">
-          <span class="text-gray-500 text-sm">Image preview</span>
-        </div>
-      </div>
     </div>
   </div>
 
-  <!-- Search script -->
   <script>
-    function filterCards() {
-      const input = document.getElementById("searchInput").value.toLowerCase();
-      const cards = document.querySelectorAll(".history-card");
+    // Filter dropdown toggle
+    document.getElementById('filterButton').addEventListener('click', () => {
+      document.getElementById('filterDropdown').classList.toggle('show');
+    });
+    window.addEventListener('click', e => {
+      if (!e.target.closest('#filterDropdown') && !e.target.closest('#filterButton')) {
+        document.getElementById('filterDropdown').classList.remove('show');
+      }
+    });
 
-      cards.forEach(card => {
-        const keywords = card.getAttribute("data-keywords");
-        if (keywords && keywords.toLowerCase().includes(input)) {
-          card.style.display = "block";
-        } else {
-          card.style.display = "none";
-        }
+    // Reset filters
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      ['potholes','trafficlight','markings','dumping','drains','other']
+        .forEach(id => document.getElementById(`filter-${id}`).checked = true);
+      document.getElementById('dateFrom').value = '';
+      document.getElementById('dateTo').value = '';
+      filterCards();
+    }
+
+    // Filter logic
+    function filterCards() {
+      const s = document.getElementById('searchInput').value.toLowerCase();
+      const f = {
+        potholes:     document.getElementById('filter-potholes').checked,
+        trafficlight: document.getElementById('filter-trafficlight').checked,
+        markings:     document.getElementById('filter-markings').checked,
+        dumping:      document.getElementById('filter-dumping').checked,
+        drains:       document.getElementById('filter-drains').checked,
+        other:        document.getElementById('filter-other').checked
+      };
+      const from = document.getElementById('dateFrom').value;
+      const to   = document.getElementById('dateTo').value;
+      const known = ['potholes','trafficlight','markings','dumping','drains'];
+
+      document.querySelectorAll('.history-card').forEach(card => {
+        const type = card.dataset.type, date = new Date(card.dataset.date),
+              txt  = card.textContent.toLowerCase();
+        const byType   = f[type] || (!known.includes(type) && f.other);
+        let   byDate   = true;
+        if (from && date < new Date(from)) byDate = false;
+        if (to   && date > new Date(to))   byDate = false;
+        const bySearch = !s || txt.includes(s);
+        card.style.display = (byType && byDate && bySearch) ? 'block' : 'none';
       });
     }
+
+    // Voting: single vote per card
+    function voteUp(btn) {
+      const card = btn.closest('.history-card'), id = card.dataset.id,
+            prev = localStorage.getItem(`vote-${id}`),
+            up   = card.querySelector('.vote-up'),
+            dn   = card.querySelector('.vote-down'),
+            upc  = up.nextElementSibling,
+            dnc  = dn.nextElementSibling;
+
+      if (prev === 'up') {
+        upc.textContent = '0';
+        up.classList.remove('ring-2');
+        localStorage.removeItem(`vote-${id}`);
+      } else {
+        upc.textContent = '1';
+        up.classList.add('ring-2');
+        localStorage.setItem(`vote-${id}`, 'up');
+        if (prev === 'down') {
+          dnc.textContent = '0';
+          dn.classList.remove('ring-2');
+        }
+      }
+    }
+
+    function voteDown(btn) {
+      const card = btn.closest('.history-card'), id = card.dataset.id,
+            prev = localStorage.getItem(`vote-${id}`),
+            up   = card.querySelector('.vote-up'),
+            dn   = card.querySelector('.vote-down'),
+            upc  = up.nextElementSibling,
+            dnc  = dn.nextElementSibling;
+
+      if (prev === 'down') {
+        dnc.textContent = '0';
+        dn.classList.remove('ring-2');
+        localStorage.removeItem(`vote-${id}`);
+      } else {
+        dnc.textContent = '1';
+        dn.classList.add('ring-2');
+        localStorage.setItem(`vote-${id}`, 'down');
+        if (prev === 'up') {
+          upc.textContent = '0';
+          up.classList.remove('ring-2');
+        }
+      }
+    }
+    // Restore votes on load
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.history-card').forEach(card => {
+        const id = card.dataset.id, v = localStorage.getItem(`vote-${id}`);
+        if (!v) return;
+        const btn = card.querySelector(v==='up'?'.vote-up':'.vote-down');
+        btn.classList.add('ring-2');
+        btn.nextElementSibling.textContent = '1';
+      });
+    });
   </script>
 </body>
 </html>
