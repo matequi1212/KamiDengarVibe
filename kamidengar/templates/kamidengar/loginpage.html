@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    {% load static %}
+</head>
+<body class="h-screen flex flex-col bg-[#F1FFE7]">
+    
+    <!-- SVG background -->
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+        <svg class="w-full h-full" viewBox="0 0 375 812" fill="none" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#EBFBE4" />
+                    <stop offset="100%" stop-color="#F1FFE7" />
+                </linearGradient>
+                <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="25%" stop-color="#B4DDD4" />
+                    <stop offset="50%" stop-color="#E4C96E" />
+                    <stop offset="75%" stop-color="#DDB5B5" />
+                    <stop offset="100%" stop-color="#AFD7CE" />
+                </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#bg-gradient)" />
+            <path d="M0,100 C75,50 300,150 375,100 L375,0 L0,0 Z" 
+                fill="url(#wave-gradient)"
+                fill-opacity="0.7"
+                vector-effect="non-scaling-stroke"/>
+            <path d="M0,600 C100,650 275,550 475,600 L375,812 L0,812 Z" 
+                fill="url(#wave-gradient)"
+                fill-opacity="0.7"
+                vector-effect="non-scaling-stroke"/>
+        </svg>
+    </div>
+    
+    <!-- Back button -->
+    <div class="absolute top-6 left-6">
+        <button onclick="window.history.back()" class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back
+        </button>
+    </div>
+
+    <!-- App Logo -->
+    <div class="mt-10 items-center">
+        <img src="/static/kamidengar/logo.png" alt="Logo" class="rounded-lg w-s max-w-md mx-auto">
+    </div>
+
+    <!-- Login Form -->
+    <div class="flex-grow flex flex-col items-center justify-center">
+        <h1 class="text-[30px] font-bold font-inter mb-6" style="font-family: 'Inter', sans-serif">Log In</h1>
+        
+        <form id="loginForm" class="flex flex-col items-center">
+            <!-- Email Field -->
+            <div class="flex flex-col mb-4">
+                <label for="loginEmail" class="text-black mb-1">Email:</label>
+                <div class="bg-[#D9D9D9] w-72 h-10 p-6 rounded-lg shadow-lg flex items-center">
+                    <input type="email" id="loginEmail" name="email" class="w-full bg-transparent text-gray-800 border-none focus:outline-none placeholder-gray-600" placeholder="AbuAli@Gmail.com" required>
+                </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="flex flex-col mb-4">
+                <label for="loginPassword" class="text-black mb-1">Password:</label>
+                <div class="bg-[#D9D9D9] w-72 h-10 p-6 rounded-lg shadow-lg flex items-center">
+                    <input type="password" id="loginPassword" name="password" class="w-full bg-transparent text-gray-800 border-none focus:outline-none placeholder-gray-600" placeholder="********" required minlength="6">
+                </div>
+            </div>
+
+            <!-- Forgot Password Link -->
+            <div class="w-72 text-right mb-6">
+                <a href="/forgetpassword/" class="text-sm underline hover:text-red-600">Forgot Password?</a>
+            </div>
+
+            <!-- Log In Button -->
+            <button type="submit" class="bg-[#D9D9D9] w-72 py-3 rounded-full shadow-lg hover:bg-gray-300 transition duration-300 font-medium text-gray-800 mt-4">
+                Login
+            </button>
+        </form>
+
+        <!-- Status Message -->
+        <div id="loginMessage" class="mt-4 text-center"></div>
+
+        <!-- Sign Up Link -->
+        <div class="w-72 text-center mt-4">
+            <span class="text-sm">Don't have an account? </span>
+            <a href="/createaccpage/" class="text-sm underline hover:text-red-600">Sign Up</a>
+        </div>
+    </div>
+
+    <!-- Firebase Initialization and Login Logic -->
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDxUojvQOowLYJAUdd-PRArjiR2TlxeV78",
+            authDomain: "kamidengar-36c83.firebaseapp.com",
+            projectId: "kamidengar-36c83",
+            storageBucket: "kamidengar-36c83.firebasestorage.app",
+            messagingSenderId: "310947680381",
+            appId: "1:310947680381:web:af6a0a2f79759d94d1a114",
+            measurementId: "G-XR8Y9NB893"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const messageEl = document.getElementById('loginMessage');
+            const loginBtn = e.target.querySelector('button[type="submit"]');
+            
+            // Clear previous messages
+            messageEl.textContent = '';
+            messageEl.className = 'mt-4 text-center';
+            
+            // Show loading state
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
+            
+            // Sign in with email and password
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    // Login successful
+                    messageEl.textContent = "Login successful! Redirecting...";
+                    messageEl.className += ' text-green-600';
+                    setTimeout(() => window.location.href = 'dashboard.html', 1500);
+                })
+                .catch((error) => {
+                    // Handle errors
+                    let errorMessage = "Login failed. Please try again.";
+                    
+                    switch(error.code) {
+                        case 'auth/invalid-email':
+                            errorMessage = "Please enter a valid email address.";
+                            break;
+                        case 'auth/user-disabled':
+                            errorMessage = "This account has been disabled.";
+                            break;
+                        case 'auth/user-not-found':
+                            errorMessage = "No account found with this email.";
+                            break;
+                        case 'auth/wrong-password':
+                            errorMessage = "Incorrect password.";
+                            break;
+                    }
+                    
+                    messageEl.textContent = errorMessage;
+                    messageEl.className += ' text-red-600';
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Login';
+                });
+        });
+
+        // Check if user is already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = '/homepage/';
+            }
+        });
+    </script>
+</body>
+</html>

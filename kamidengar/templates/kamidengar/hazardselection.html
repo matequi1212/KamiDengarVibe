@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hazard Selection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="relative min-h-screen bg-gray-100 overflow-hidden">
+
+  <!-- Blurred Background -->
+  <div class="absolute inset-0 bg-[url('/static/images/homepage-blur.jpg')] bg-cover bg-center backdrop-blur-sm z-0"></div>
+
+  <!-- Modal-like Foreground -->
+  <div class="relative z-10 flex items-center justify-center min-h-screen p-6">
+    <div class="bg-[#d1fbe0] rounded-2xl shadow-lg w-full max-w-sm p-6 relative">
+
+      <!-- Close Button -->
+      <a href="/homepage/" class="absolute top-4 right-4 text-gray-700 hover:text-gray-900">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </a>
+
+      <!-- Title -->
+      <h2 class="text-center text-lg font-medium text-gray-800 mb-6">Report about:</h2>
+
+      <!-- Option Buttons -->
+      <div class="space-y-4">
+        <a href="pothole.html" class="block w-full text-center bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full py-3 text-gray-800 font-semibold">Potholes</a>
+        <a href="trafficlight.html" class="block w-full text-center bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full py-3 text-gray-800 font-semibold">Broken traffic lights</a>
+        <a href="fadedroad.html" class="block w-full text-center bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full py-3 text-gray-800 font-semibold">Faded road markings</a>
+        <a href="dumping.html" class="block w-full text-center bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full py-3 text-gray-800 font-semibold">Illegal dumping</a>
+        <a href="drains.html" class="block w-full text-center bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full py-3 text-gray-800 font-semibold">Blocked drains</a>
+        <a href="parking.html" class="block w-full text-center bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full py-3 text-gray-800 font-semibold">Illegal parking</a>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+</head>
+
+<body class="h-screen flex flex-col">
+     <!-- SVG background -->
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+        <svg class="w-full h-full" viewBox="0 0 375 812" fill="none" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#EBFBE4" />
+                    <stop offset="100%" stop-color="#F1FFE7" />
+                </linearGradient>
+                <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="25%" stop-color="#B4DDD4" />
+                    <stop offset="50%" stop-color="#E4C96E" />
+                    <stop offset="75%" stop-color="#DDB5B5" />
+                    <stop offset="100%" stop-color="#AFD7CE" />
+                </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#bg-gradient)" />
+            <path d="M0,100 C75,50 300,150 375,100 L375,0 L0,0 Z" 
+                fill="url(#wave-gradient)"
+                fill-opacity="0.7"
+                vector-effect="non-scaling-stroke"/>
+            <path d="M0,600 C100,650 275,550 475,600 L375,812 L0,812 Z" 
+                fill="url(#wave-gradient)"
+                fill-opacity="0.7"
+                vector-effect="non-scaling-stroke"/>
+        </svg>
+    </div>
+
+    <!-- Back button -->
+    <div class="absolute top-6 left-6">
+        <button onclick="window.history.back()" class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back
+        </button>
+    </div>
+
+    <!-- Signup Form -->
+    <div class="flex-grow flex flex-col items-center justify-center">
+        <h1 class="text-[30px] font-bold font-inter mb-6" style="font-family: 'Inter', sans-serif">Create Account</h1>
+        
+        <form id="signupForm" class="flex flex-col items-center">
+            <!-- Name -->
+            <div class="flex flex-col mb-4">
+                <label for="name" class="text-black mb-1">Name</label>
+                <div class="bg-[#D9D9D9] w-72 h-10 p-6 rounded-lg shadow-lg flex items-center">
+                    <input type="text" id="name" name="name" class="w-full bg-transparent text-gray-800 border-none focus:outline-none placeholder-gray-600" placeholder="Fill in your name" required>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="flex flex-col mb-4">
+                <label for="email" class="text-black mb-1">Email</label>
+                <div class="bg-[#D9D9D9] w-72 h-10 p-6 rounded-lg shadow-lg flex items-center">
+                    <input type="email" id="email" name="email" class="w-full bg-transparent text-gray-800 border-none focus:outline-none placeholder-gray-600" placeholder="AbuAli@Gmail.com" required>
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="flex flex-col mb-4">
+                <label for="password" class="text-black mb-1">Password</label>
+                <div class="bg-[#D9D9D9] w-72 h-10 p-6 rounded-lg shadow-lg flex items-center">
+                    <input type="password" id="password" name="password" class="w-full bg-transparent text-gray-800 border-none focus:outline-none placeholder-gray-600" placeholder="********" required minlength="6">
+                </div>
+            </div>
+
+            <!-- Terms Checkbox -->
+            <div class="w-72 flex items-center mb-4">
+                <input type="checkbox" id="terms" name="terms" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" required>
+                <label for="terms" class="ml-2 text-sm">Agree with</label>
+                <a href="/termsandconditions/" class="text-sm underline hover:text-red-600"> Terms and Conditions</a>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="bg-[#D9D9D9] w-72 py-3 rounded-full shadow-lg hover:bg-gray-300 transition duration-300 font-medium text-gray-800">
+                Create Account
+            </button>
+        </form>
+
+        <!-- Status Message -->
+        <div id="message" class="mt-4 text-center"></div>
+    </div>
+
+    <!-- Firebase Initialization and Form Handling -->
+    <script>
+        // Paste your Firebase config here
+        const firebaseConfig = {
+  apiKey: "AIzaSyDxUojvQOowLYJAUdd-PRArjiR2TlxeV78",
+  authDomain: "kamidengar-36c83.firebaseapp.com",
+  projectId: "kamidengar-36c83",
+  storageBucket: "kamidengar-36c83.firebasestorage.app",
+  messagingSenderId: "310947680381",
+  appId: "1:310947680381:web:af6a0a2f79759d94d1a114",
+  measurementId: "G-XR8Y9NB893"
+};
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Handle form submission
+        document.getElementById('signupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const messageEl = document.getElementById('message');
+            
+            // Clear previous messages
+            messageEl.textContent = '';
+            messageEl.className = 'mt-4 text-center';
+            
+            // Validate terms checkbox
+            if (!document.getElementById('terms').checked) {
+                messageEl.textContent = "You must agree to the terms and conditions";
+                messageEl.className += ' text-red-600';
+                return;
+            }
+            
+            // Create user with Firebase Auth
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // User created successfully
+                    const user = userCredential.user;
+                    
+                    // Save additional user data to Firestore
+                    return db.collection('users').doc(user.uid).set({
+                        name: name,
+                        email: email,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(() => {
+                    // Success message
+                    messageEl.textContent = "Account created successfully! Redirecting...";
+                    messageEl.className += ' text-green-600';
+                    
+                    // Reset form
+                    document.getElementById('signupForm').reset();
+                    
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/dashboard/'; // Change this to your desired redirect page
+                    }, 2000);
+                })
+                .catch((error) => {
+                    // Handle errors
+                    let errorMessage = error.message;
+                    
+                    // More user-friendly error messages
+                    if (error.code === 'auth/email-already-in-use') {
+                        errorMessage = "This email is already registered.";
+                    } else if (error.code === 'auth/weak-password') {
+                        errorMessage = "Password should be at least 6 characters.";
+                    } else if (error.code === 'auth/invalid-email') {
+                        errorMessage = "Please enter a valid email address.";
+                    }
+                    
+                    messageEl.textContent = errorMessage;
+                    messageEl.className += ' text-red-600';
+                });
+        });
+    </script>
+</body>
+</html>

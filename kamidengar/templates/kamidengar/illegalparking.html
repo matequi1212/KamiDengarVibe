@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Potholes Report</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-200 p-4">
+
+  <!-- iPhone-16 frame (responsive) -->
+  <div
+    class="relative w-full max-w-[390px] aspect-[9/19] overflow-hidden"
+    style="
+      background: linear-gradient(180deg, #F1FFE7 36.5%, #96C0B7 100%);
+      border-radius: 50px;
+    "
+  >
+    <!-- Blob background -->
+    <div class="relative w-full">
+      <div class="w-full pb-[68.18%]"></div>
+      <svg xmlns="http://www.w3.org/2000/svg"
+           viewBox="0 0 393 268"
+           preserveAspectRatio="xMidYMid slice"
+           class="absolute inset-0 w-full h-full fill-[#B4DDD4] filter drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
+      >
+        <g filter="url(#filter0_d_670_22534)">
+          <path d="M408.486 144.308C408.545 164.374 395.186 182.004 375.852 187.375C371.968 188.453 367.957 189 363.926 189L79.1341 189C57.2446 189 39.4997 206.745 39.4997 228.634L39.4997 234.259C39.4997 240.833 36.9694 247.154 32.4335 251.912C16.4606 268.666 -11.7785 257.281 -11.6643 234.133L-11.395 179.525L-11.672 85.8976C-11.843 28.0981 34.8741 -18.8962 92.6736 -19.0673L303.345 -19.6905C361.144 -19.8615 408.138 26.8556 408.309 84.6551L408.486 144.308Z"/>
+        </g>
+        <defs>
+          <filter id="filter0_d_670_22534"
+                  x="-15.6726" y="-19.6909"
+                  width="428.159" height="287.585"
+                  filterUnits="userSpaceOnUse"
+                  color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                           result="hardAlpha"/>
+            <feOffset dy="4"/>
+            <feGaussianBlur stdDeviation="2"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1" result="shape"/>
+          </filter>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Content overlay -->
+    <div class="absolute inset-0 flex flex-col items-center px-6 pt-8 space-y-4 overflow-y-auto z-10">
+      <button class="self-start text-black text-2xl">←</button>
+      <h2 class="text-black text-base text-center">Report about:</h2>
+      <h3 class="text-black text-2xl font-bold text-center">Illegal Parking</h3>
+
+      <input
+        id="locationInput"
+        type="text"
+        placeholder="Enter address or location"
+        class="w-full max-w-xs bg-[#E8E8E8] rounded-full px-4 py-2 border border-gray-300 placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-300"
+      />
+
+      <input
+        id="dateTimePicker"
+        type="text"
+        placeholder="Select date & time"
+        class="w-full max-w-xs bg-[#E8E8E8] rounded-full px-4 py-2 border border-gray-300 placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-300"
+      />
+
+      <div class="w-full max-w-md bg-[#E8E8E8] rounded-2xl p-6 shadow-md border border-gray-300 mt-4">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="w-12 h-12 mx-auto text-gray-500"
+             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 7h4l3-3h4l3 3h4a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V8a1 1 0 011-1z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 11a4 4 0 100 8 4 4 0 000-8z"/>
+        </svg>
+        <p class="text-black mb-4 text-sm text-center">Please upload photo to continue</p>
+        
+        <!-- Camera/Album Selection Buttons -->
+        <div class="flex justify-center space-x-4 mb-4">
+          <button
+            id="openCameraBtn"
+            class="bg-green-500 hover:bg-green-600 text-white rounded-full px-4 py-2"
+          >
+            Take Photo
+          </button>
+          <button
+            id="openAlbumBtn"
+            class="bg-blue-500 hover:bg-blue-600 text-white rounded-full px-4 py-2"
+          >
+            Choose from Album
+          </button>
+        </div>
+        
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          id="cameraInput"
+          class="hidden"
+        />
+        <input
+          type="file"
+          accept="image/*"
+          id="albumInput"
+          class="hidden"
+        />
+        <img id="previewImage" class="hidden mt-4 mx-auto rounded-xl max-w-full" />
+        <video
+          id="previewVideo"
+          class="hidden mt-4 mx-auto rounded-xl max-w-full"
+          controls playsinline
+        ></video>
+        <div class="flex justify-center mt-6">
+          <a href="/thankyou/" id ="submitReport"
+             class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-full px-6 py-2 text-center shadow-md">
+            Submit Report
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <!-- Firebase v8 integration -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+  <script>
+    flatpickr("#dateTimePicker", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+    });
+
+    const cameraInput = document.getElementById('cameraInput');
+    const albumInput = document.getElementById('albumInput');
+    const openCameraBtn = document.getElementById('openCameraBtn');
+    const openAlbumBtn = document.getElementById('openAlbumBtn');
+    const previewImage = document.getElementById('previewImage');
+    const previewVideo = document.getElementById('previewVideo');
+
+    // Handle camera button click
+    openCameraBtn.addEventListener('click', () => cameraInput.click());
+    
+    // Handle album button click
+    openAlbumBtn.addEventListener('click', () => albumInput.click());
+    
+    // Function to handle file selection (shared by both camera and album)
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const url = URL.createObjectURL(file);
+      if (file.type.startsWith('image/')) {
+        previewVideo.classList.add('hidden');
+        previewImage.src = url;
+        previewImage.classList.remove('hidden');
+      } else {
+        previewImage.classList.add('hidden');
+        previewVideo.src = url;
+        previewVideo.classList.remove('hidden');
+      }
+    }
+
+    // Add event listeners for both file inputs
+    cameraInput.addEventListener('change', handleFileSelect);
+    albumInput.addEventListener('change', handleFileSelect);
+
+    // Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDxUojvQOowLYJAUdd-PRArjiR2TlxeV78",
+      authDomain: "kamidengar-36c83.firebaseapp.com",
+      projectId: "kamidengar-36c83",
+      storageBucket: "kamidengar-36c83.appspot.com",
+      messagingSenderId: "310947680381",
+      appId: "1:310947680381:web:af6a0a2f79759d94d1a114",
+      measurementId: "G-XR8Y9NB893"
+    };
+    
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+    var storage = firebase.storage();
+
+    document.getElementById('submitReport').addEventListener('click', function(e) {
+      e.preventDefault();
+      var location = document.getElementById('locationInput').value;
+      var datetime = document.getElementById('dateTimePicker').value;
+      
+      // Check which file input was used
+      var file = cameraInput.files[0] || albumInput.files[0];
+      
+      if (!location || !datetime || !file) {
+        alert('Please fill all fields and upload a photo or video.');
+        return;
+      }
+      window.location.href = this.href;
+
+      // Upload file to Firebase Storage
+      var storageRef = storage.ref('reports/' + Date.now() + '_' + file.name);
+      var uploadTask = storageRef.put(file);
+
+      uploadTask.on('state_changed', 
+        null,
+        function(error) {
+          alert('Upload failed: ' + error.message);
+        },
+        function() {
+          // Get download URL
+          uploadTask.snapshot.ref.getDownloadURL().then(function(url) {
+            // Add report to Firestore
+            db.collection('reports').add({
+              reporter: 'Anonymous',
+              type: 'potholes',
+              title: 'Potholes',
+              location: location,
+              datetime: firebase.firestore.Timestamp.fromDate(new Date(datetime)),
+              mediaUrl: url,
+              created: firebase.firestore.FieldValue.serverTimestamp(),
+              upvotes: 0,
+              downvotes: 0
+            }).then(function() {
+              alert('Report submitted successfully!');
+              window.location.href = 'Community_Update.html';
+            }).catch(function(error) {
+              alert('Error submitting report: ' + error.message);
+            });
+          });
+        }
+      );
+    });
+  </script>
+</body>
+</html>
